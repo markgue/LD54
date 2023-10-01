@@ -33,32 +33,33 @@ public class FighterMovement : MonoBehaviour
         rb.AddForce(horizontalMovement * airMod);
     }
 
-    public void SetMovement(CallbackContext context)
+    public void SetMovement(Vector3 mov)
     {
-        Vector2 value = context.ReadValue<Vector2>();
-        horizontalMovement = (Quaternion.Euler(90, 0, 0) * value * moveForce);
+        horizontalMovement = mov * moveForce;
         if (!horizontalMovement.Equals(Vector3.zero))
             latestMovement = horizontalMovement;
     }
 
-    public void Jump(CallbackContext context)
+    public void Jump()
     {
-        if (context.performed && !airborne)
+        if (!airborne)
         {
             rb.AddForce(jumpVector);
         }
     }
 
-    public void Dash(CallbackContext context)
+    public void Dash()
     {
-        if (context.performed)
-        {
-            rb.velocity = new Vector3(0,0,0);
-            rb.AddForce(latestMovement.normalized * dashForce);
-        }
+        rb.velocity = Vector3.zero;
+        rb.AddForce(latestMovement.normalized * dashForce);
     }
 
-    private void SetAirborne(bool b)
+    public bool IsAirborne()
+    {
+        return airborne;
+    }
+
+    public void SetAirborne(bool b)
     {
         airborne = b;
         if (b)
@@ -69,9 +70,9 @@ public class FighterMovement : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.material.name.StartsWith("Tile"))
+        HexTile ht = collision.collider.GetComponentInParent<HexTile>();
+        if (ht != null)
         {
-            HexTile ht = collision.collider.GetComponentInParent<HexTile>();
             hexTiles.Add(ht);
             Debug.Log("Enter: " + hexTiles.Count);
 
@@ -89,10 +90,10 @@ public class FighterMovement : MonoBehaviour
 
     public void OnCollisionExit(Collision collision)
     {
-        if (collision.collider.material.name.StartsWith("Tile"))
+        HexTile ht = collision.collider.GetComponentInParent<HexTile>();
+        if (ht != null)
         {
             Debug.Log("Exit: " + hexTiles.Count);
-            HexTile ht = collision.collider.GetComponentInParent<HexTile>();
             hexTiles.Remove(ht);
             if (hexTiles.Count == 0)
                 SetAirborne(true);
