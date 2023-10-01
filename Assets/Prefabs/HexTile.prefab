@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 410735793876293973}
+  - component: {fileID: 5582661827616988332}
   m_Layer: 0
   m_Name: HexTile
   m_TagString: Untagged
@@ -32,6 +33,20 @@ Transform:
   - {fileID: 7419893477754576882}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5582661827616988332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9015019287084942528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1375f0c83b1f8f4988f5a84d728c334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  q: 0
+  r: 0
 --- !u!1001 &7021807480199051289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66,11 +81,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ca25e2e1204f7084399271c4dffa44b9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ca25e2e1204f7084399271c4dffa44b9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ca25e2e1204f7084399271c4dffa44b9, type: 3}
       propertyPath: m_LocalRotation.y
@@ -82,7 +97,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ca25e2e1204f7084399271c4dffa44b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ca25e2e1204f7084399271c4dffa44b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -96,6 +111,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: f0164571167db7e47809c759c1d814c3, type: 2}
+    - target: {fileID: -5754084199372789682, guid: ca25e2e1204f7084399271c4dffa44b9, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2124705421725058983, guid: f6ef98ca3bc598e4ca95908dac69e6fc, type: 3}
     - target: {fileID: 919132149155446097, guid: ca25e2e1204f7084399271c4dffa44b9, type: 3}
       propertyPath: m_Name
       value: hexagon
@@ -125,7 +144,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7904680887302538568}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 374bc4ab739befa4f8887cc3342a0feb, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -139,4 +158,4 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -2124705421725058983, guid: 20c09adca9d2cc64f94f3fe066dde1fd, type: 3}
+  m_Mesh: {fileID: -2124705421725058983, guid: 443dc9371124a804c8c3c999ffaadd24, type: 3}

@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HexTile : MonoBehaviour
+public class  HexTile: MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int q; // Column
+    public int r; // Row
 
-    // Update is called once per frame
-    void Update()
+    private int hp = 1;
+
+    // public static HexTile CreateHexTile(int column, int row)
+    // {
+    //     q = column;
+    //     r = row;
+    // }
+    public void DamageTile(int dmg)
     {
-        
+        hp -= dmg;
+        if (hp <= 0)
+            Debug.Log("Destroyed");
     }
 }

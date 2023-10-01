@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -16,6 +17,8 @@ public class FighterMovement : MonoBehaviour
     Vector3 jumpVector;         //vector applied to make this fighter jump
     float airMod = 1f;
     bool airborne;
+
+    List<HexTile> hexTiles = new List<HexTile>();
 
     private void Awake()
     {
@@ -50,6 +53,7 @@ public class FighterMovement : MonoBehaviour
     {
         if (context.performed)
         {
+            rb.velocity = new Vector3(0,0,0);
             rb.AddForce(latestMovement.normalized * dashForce);
         }
     }
@@ -66,12 +70,32 @@ public class FighterMovement : MonoBehaviour
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.material.name.StartsWith("Tile"))
-            SetAirborne(false);
+        {
+            HexTile ht = collision.collider.GetComponentInParent<HexTile>();
+            hexTiles.Add(ht);
+            Debug.Log("Enter: " + hexTiles.Count);
+
+            if (hexTiles.Count == 1)
+            {
+                if (airborne)
+                {
+                    Debug.Log("damaging tile");
+                    ht.DamageTile(1);
+                }
+                SetAirborne(false);
+            }
+        }
     }
 
     public void OnCollisionExit(Collision collision)
     {
         if (collision.collider.material.name.StartsWith("Tile"))
-            SetAirborne(true);
+        {
+            Debug.Log("Exit: " + hexTiles.Count);
+            HexTile ht = collision.collider.GetComponentInParent<HexTile>();
+            hexTiles.Remove(ht);
+            if (hexTiles.Count == 0)
+                SetAirborne(true);
+        }
     }
 }

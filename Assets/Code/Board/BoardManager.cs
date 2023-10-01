@@ -22,7 +22,6 @@ public class BoardManager : MonoBehaviour
 
     IEnumerator InstantiateHex(int x, int y)
     {
-        Debug.Log("x" + x + "y" + y);
         Vector3 hexPosition = new Vector3((x + y / 2f) * ROOT3 * hexRadius, 0, (y / 2f) * 3f * hexRadius);
         GameObject hexFab = Instantiate(hexagonPrefab, hexPosition, Quaternion.identity);
         yield return new WaitForSeconds(delayBetweenTiles); // Wait before creating the next tile.
