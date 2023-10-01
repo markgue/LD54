@@ -74,13 +74,13 @@ public class FighterMovement : MonoBehaviour
         if (ht != null)
         {
             hexTiles.Add(ht);
-            Debug.Log("Enter: " + hexTiles.Count);
+            //Debug.Log("Enter: " + hexTiles.Count);
 
             if (hexTiles.Count == 1)
             {
                 if (airborne)
                 {
-                    Debug.Log("damaging tile");
+                    //Debug.Log("damaging tile");
                     ht.DamageTile(1);
                 }
                 SetAirborne(false);
@@ -93,7 +93,7 @@ public class FighterMovement : MonoBehaviour
         HexTile ht = collision.collider.GetComponentInParent<HexTile>();
         if (ht != null)
         {
-            Debug.Log("Exit: " + hexTiles.Count);
+            //Debug.Log("Exit: " + hexTiles.Count);
             hexTiles.Remove(ht);
             if (hexTiles.Count == 0)
                 SetAirborne(true);

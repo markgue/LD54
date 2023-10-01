@@ -18,6 +18,6 @@ public class  HexTile: MonoBehaviour
     {
         hp -= dmg;
         if (hp <= 0)
-            Debug.Log("Destroyed");
+            ; // Debug.Log("Destroyed");
     }
 }
