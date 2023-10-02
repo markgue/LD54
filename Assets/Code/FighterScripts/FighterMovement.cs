@@ -11,6 +11,7 @@ public class FighterMovement : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float dashForce;
     [SerializeField] float airMobility;
+    [SerializeField] DirectionIndicator dir;
     Rigidbody rb;
     Vector3 horizontalMovement; //the direction the fighter is trying to move right now due to inputs
     Vector3 latestMovement;     //latest non-zero direction vector inputted
@@ -37,7 +38,10 @@ public class FighterMovement : MonoBehaviour
     {
         horizontalMovement = mov * moveForce;
         if (!horizontalMovement.Equals(Vector3.zero))
+        {
             latestMovement = horizontalMovement;
+            dir.SetDirection(latestMovement);
+        }
     }
 
     public void Jump()
@@ -70,33 +74,33 @@ public class FighterMovement : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        // HexTile ht = collision.collider.GetComponentInParent<HexTile>();
-        // if (ht != null)
-        // {
-        //     hexTiles.Add(ht);
-        //     //Debug.Log("Enter: " + hexTiles.Count);
+        HexTile ht = collision.collider.GetComponentInParent<HexTile>();
+        if (ht != null)
+        {
+            hexTiles.Add(ht);
+            //Debug.Log("Enter: " + hexTiles.Count);
 
-        //     if (hexTiles.Count == 1)
-        //     {
-        //         if (airborne)
-        //         {
-        //             //Debug.Log("damaging tile");
-        //             ht.DamageTile(1);
-        //         }
+            if (hexTiles.Count == 1)
+            {
+                if (airborne)
+                {
+                    //Debug.Log("damaging tile");
+                    ht.DamageTile(1);
+                }
                 SetAirborne(false);
-        //    }
-        //}
+            }
+        }
     }
 
     public void OnCollisionExit(Collision collision)
     {
-        // HexTile ht = collision.collider.GetComponentInParent<HexTile>();
-        // if (ht != null)
-        // {
-        //     //Debug.Log("Exit: " + hexTiles.Count);
-        //     hexTiles.Remove(ht);
-        //     if (hexTiles.Count == 0)
+        HexTile ht = collision.collider.GetComponentInParent<HexTile>();
+        if (ht != null)
+        {
+            //Debug.Log("Exit: " + hexTiles.Count);
+            hexTiles.Remove(ht);
+            if (hexTiles.Count == 0)
                 SetAirborne(true);
-        //}
+        }
     }
 }

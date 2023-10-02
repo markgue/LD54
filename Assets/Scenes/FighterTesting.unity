@@ -337,6 +337,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   q: 0
   r: 0
+  hp: 0
+  isDestroyed: 0
 --- !u!1 &96180036
 GameObject:
   m_ObjectHideFlags: 0
