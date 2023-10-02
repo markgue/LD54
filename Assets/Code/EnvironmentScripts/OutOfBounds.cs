@@ -8,7 +8,7 @@ public class OutOfBounds : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         FighterMovement f = other.transform.parent.GetComponent<FighterMovement>();
-        if (f != null)
+        if (f != null && !other.isTrigger)
             LevelManager.Instance.RemoveFighter(f);
     }
 }
