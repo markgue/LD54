@@ -16,6 +16,7 @@ public class BoardManager : MonoBehaviour
     public int numRings = 5; // Number of rings in the hex grid
     public float hexRadius = 1.0f; // The distance from the center of a hexagon to any of its vertices.
     public float delayBetweenTiles = 0.1f; // Delay in seconds between creating each tile.
+    public float ringFallDelay = 0.01f;
 
     private const float ROOT3 = 1.73205f;
 
@@ -36,7 +37,7 @@ public class BoardManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         Debug.Log("Destroying ring " + ring);
-        DestroyRing(ring);
+        yield return DestroyRing(ring);
     }
 
     IEnumerator InstantiateHex(int x, int y, bool isBorder)
@@ -92,23 +93,49 @@ public class BoardManager : MonoBehaviour
         yield return true;
     }
 
-    public void DestroyTile(Vector2 tile)
+    public void DestroyTile(Vector2 tile, bool ignoreDamage)
     {
         HexTile ht = hexMap[tile];
         if (ht)
         {
+            ht.ignoreDamageIndicator = ignoreDamage;
             ht.DamageTile(ht.hp);
         }
     }
 
-    public void DestroyRing(int ring)
+    private IEnumerator DestroyRing(int ring)
     {
         int x = ring, y = -ring;
-        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(x, ++y)); // move down right. Note N-1
-        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(--x, ++y)); // move down left
-        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(--x, y)); // move left
-        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(x, --y)); // move up left
-        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(++x, --y)); // move up right
-        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(++x, y));  // move right
+        for(int i=0; i<ring; ++i) 
+        {
+            DestroyTile(new Vector2(x, y++), true); // move down right. Note N-1 
+            yield return new WaitForSeconds(ringFallDelay);
+        } 
+        for(int i=0; i<ring; ++i) 
+        {
+            DestroyTile(new Vector2(x--, y++), true); // move down left 
+            yield return new WaitForSeconds(ringFallDelay);
+        } 
+        for(int i=0; i<ring; ++i) 
+        {
+            DestroyTile(new Vector2(x--, y), true); // move left 
+            yield return new WaitForSeconds(ringFallDelay);
+        } 
+        for(int i=0; i<ring; ++i) 
+        {
+            DestroyTile(new Vector2(x, y--), true); // move up left 
+            yield return new WaitForSeconds(ringFallDelay);
+        } 
+        for(int i=0; i<ring; ++i) 
+        {
+            DestroyTile(new Vector2(x++, y--), true); // move up right 
+            yield return new WaitForSeconds(ringFallDelay);
+        } 
+        for(int i=0; i<ring; ++i) 
+        {
+            DestroyTile(new Vector2(x++, y), true);  // move right 
+            yield return new WaitForSeconds(ringFallDelay);
+        } 
+        yield return true;
     }
 }
