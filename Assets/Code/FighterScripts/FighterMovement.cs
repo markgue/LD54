@@ -18,6 +18,8 @@ public class FighterMovement : MonoBehaviour
     Vector3 jumpVector;         //vector applied to make this fighter jump
     float airMod = 1f;
     bool jumping;
+    [SerializeField] float jumpRecharge; bool jumpCharged;
+    [SerializeField] float dashRecharge; bool dashCharged;
 
     private void Awake()
     {
@@ -25,6 +27,8 @@ public class FighterMovement : MonoBehaviour
         jumpVector = new Vector3(0f, jumpForce, 0f);
         latestMovement = new Vector3(0f, 0f, 0f);
         SetJumping(true); //because you start in the air rn
+        StartCoroutine(RechargeJump());
+        StartCoroutine(RechargeDash());
     }
 
     private void FixedUpdate()
@@ -44,17 +48,39 @@ public class FighterMovement : MonoBehaviour
 
     public void Jump()
     {
-        if (!jumping)
+        if (!jumping && jumpCharged)
         {
+            jumpCharged = false;
             SetJumping(true);
             rb.AddForce(jumpVector);
+            StartCoroutine(RechargeJump());
         }
+    }
+    private IEnumerator RechargeJump()
+    {
+        yield return new WaitForSeconds(jumpRecharge);
+        jumpCharged = true;
     }
 
     public void Dash()
     {
+        if (!dashCharged)
+            return;
         rb.velocity = Vector3.zero;
         rb.AddForce(latestMovement.normalized * dashForce);
+        SetDashCharged(false);
+        StartCoroutine(RechargeDash());
+    }
+    private void SetDashCharged(bool b)
+    {
+        dashCharged = b;
+        dir.SetDashReady(b);
+    }
+    private IEnumerator RechargeDash()
+    {
+        //if you ever set SetDashCharged public, make sure to set it up to kill this coroutine
+        yield return new WaitForSeconds(dashRecharge);
+        SetDashCharged(true);
     }
 
     public bool IsJumping()

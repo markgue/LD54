@@ -10,7 +10,7 @@ public class DirectionIndicator : MonoBehaviour
     [SerializeField] Color baseColor;
     [SerializeField] Color dashReadyColor;
     [SerializeField] int lerpTicks = 10;
-    bool dashReady = true;
+    bool dashReady;
     Coroutine lerp;
 
     private void Awake()
