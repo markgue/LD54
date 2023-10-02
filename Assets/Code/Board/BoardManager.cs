@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -25,14 +24,19 @@ public class BoardManager : MonoBehaviour
     private IEnumerator Start()
     {
         yield return StartCoroutine(GenerateHexagonalGrid());
-        yield return StartCoroutine(TestDestroy());
+        yield return StartCoroutine(TestDestroy(7));
+        yield return StartCoroutine(TestDestroy(6));
+        yield return StartCoroutine(TestDestroy(5));
+        yield return StartCoroutine(TestDestroy(4));
+        yield return StartCoroutine(TestDestroy(3));
+        yield return StartCoroutine(TestDestroy(2));
     }
 
-    IEnumerator TestDestroy()
+    IEnumerator TestDestroy(int ring)
     {
         yield return new WaitForSeconds(2);
-        DestroyRing(7);
-        yield return true;
+        Debug.Log("Destroying ring " + ring);
+        DestroyRing(ring);
     }
 
     IEnumerator InstantiateHex(int x, int y, bool isBorder)
@@ -93,7 +97,9 @@ public class BoardManager : MonoBehaviour
         HexTile ht = hexMap[tile];
         if (ht)
         {
+            ht.transform.Rotate(new Vector3(Random.Range(0, 360),Random.Range(0, 360),Random.Range(0, 360)));
             ht.DamageTile(ht.hp);
+            
         }
     }
 
