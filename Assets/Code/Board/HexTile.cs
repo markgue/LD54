@@ -9,11 +9,11 @@ public class  HexTile: MonoBehaviour
 
     private int hp = 1;
 
-    // public static HexTile CreateHexTile(int column, int row)
-    // {
-    //     q = column;
-    //     r = row;
-    // }
+    public void SetHexTileLocation(int column, int row)
+    {
+        q = column;
+        r = row;
+    }
     public void DamageTile(int dmg)
     {
         hp -= dmg;

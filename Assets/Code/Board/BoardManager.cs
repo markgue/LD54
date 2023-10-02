@@ -9,6 +9,7 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
     public GameObject hexagonPrefab; // Reference to the hexagon prefab.
+    public Material[] materials = new Material[3];
     public int numRings = 5; // Number of rings in the hex grid
     public float hexRadius = 1.0f; // The distance from the center of a hexagon to any of its vertices.
     public float delayBetweenTiles = 0.1f; // Delay in seconds between creating each tile.
@@ -24,6 +25,9 @@ public class BoardManager : MonoBehaviour
     {
         Vector3 hexPosition = new Vector3((x + y / 2f) * ROOT3 * hexRadius, 0, (y / 2f) * 3f * hexRadius);
         GameObject hexFab = Instantiate(hexagonPrefab, hexPosition, Quaternion.identity);
+        HexTile hexTileScript = hexFab.GetComponent<HexTile>();
+        hexTileScript.SetHexTileLocation(x, y);
+        hexFab.GetComponentInChildren<Renderer>().material = materials[((x-y)%3 + 3) % 3];
         yield return new WaitForSeconds(delayBetweenTiles); // Wait before creating the next tile.
     }
 
