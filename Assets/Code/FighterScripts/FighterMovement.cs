@@ -42,7 +42,7 @@ public class FighterMovement : MonoBehaviour
 
     public void Jump()
     {
-        if (!airborne)
+        //if (!airborne)
         {
             rb.AddForce(jumpVector);
         }
@@ -70,33 +70,33 @@ public class FighterMovement : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        HexTile ht = collision.collider.GetComponentInParent<HexTile>();
-        if (ht != null)
-        {
-            hexTiles.Add(ht);
-            //Debug.Log("Enter: " + hexTiles.Count);
+        // HexTile ht = collision.collider.GetComponentInParent<HexTile>();
+        // if (ht != null)
+        // {
+        //     hexTiles.Add(ht);
+        //     //Debug.Log("Enter: " + hexTiles.Count);
 
-            if (hexTiles.Count == 1)
-            {
-                if (airborne)
-                {
-                    //Debug.Log("damaging tile");
-                    ht.DamageTile(1);
-                }
+        //     if (hexTiles.Count == 1)
+        //     {
+        //         if (airborne)
+        //         {
+        //             //Debug.Log("damaging tile");
+        //             ht.DamageTile(1);
+        //         }
                 SetAirborne(false);
-            }
-        }
+        //    }
+        //}
     }
 
     public void OnCollisionExit(Collision collision)
     {
-        HexTile ht = collision.collider.GetComponentInParent<HexTile>();
-        if (ht != null)
-        {
-            //Debug.Log("Exit: " + hexTiles.Count);
-            hexTiles.Remove(ht);
-            if (hexTiles.Count == 0)
+        // HexTile ht = collision.collider.GetComponentInParent<HexTile>();
+        // if (ht != null)
+        // {
+        //     //Debug.Log("Exit: " + hexTiles.Count);
+        //     hexTiles.Remove(ht);
+        //     if (hexTiles.Count == 0)
                 SetAirborne(true);
-        }
+        //}
     }
 }
