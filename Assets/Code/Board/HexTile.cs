@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class  HexTile: MonoBehaviour
 {
     private const int MAX_HP = 3;
-    public int q; // Column
-    public int r; // Row
+    public int q; // Row
+    public int r; // Column
 
     public int hp;
     public bool isDestroyed = false;
@@ -53,5 +54,10 @@ public class  HexTile: MonoBehaviour
         {
             DamageTile(1);
         }
+    }
+
+    public void OnDrawGizmos() 
+    {
+        Handles.Label(transform.position, "⦿" + q + "," + r);
     }
 }

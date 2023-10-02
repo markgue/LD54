@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Security.Cryptography.X509Certificates;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 
 
@@ -18,23 +20,42 @@ public class BoardManager : MonoBehaviour
 
     private const float ROOT3 = 1.73205f;
 
+    private Dictionary<Vector2, HexTile> hexMap = new Dictionary<Vector2, HexTile>();
+
     private IEnumerator Start()
     {
         yield return StartCoroutine(GenerateHexagonalGrid());
+        yield return StartCoroutine(TestDestroy());
+    }
+
+    IEnumerator TestDestroy()
+    {
+        yield return new WaitForSeconds(2);
+        DestroyRing(7);
+        yield return true;
     }
 
     IEnumerator InstantiateHex(int x, int y, bool isBorder)
     {
         Vector3 hexPosition = new Vector3((x + y / 2f) * ROOT3 * hexRadius, 0, (y / 2f) * 3f * hexRadius);
-        GameObject hexFab = Instantiate(isBorder ? borderHexagonPrefab : hexagonPrefab, hexPosition, Quaternion.identity);
-        HexTile hexTileScript = hexFab.GetComponent<HexTile>();
-        hexTileScript.SetHexTileLocation(x, y);
-        if (!isBorder)
+        GameObject hexFab = Instantiate(isBorder ? borderHexagonPrefab : hexagonPrefab, hexPosition, Quaternion.identity, gameObject.transform);
+        HexTile hexTileScript;
+        Vector2 v = new Vector2(x, y);
+        if (isBorder) 
         {
+            hexTileScript = hexFab.GetComponentInChildren<HexTile>();
+            hexTileScript.SetHexTileLocation(x, y);
+            hexTileScript.isDestroyed = true;
+            yield return true;
+        }
+        else
+        {
+            hexTileScript = hexFab.GetComponent<HexTile>();
+            hexTileScript.SetHexTileLocation(x, y);
+            hexMap.Add(v, hexTileScript);
             hexFab.GetComponentInChildren<Renderer>().material = materials[((x-y)%3 + 3) % 3];
             yield return new WaitForSeconds(delayBetweenTiles); // Wait before creating the next tile.
         }
-        yield return true;
     }
 
     IEnumerator GenerateHexagonalGrid()
@@ -55,6 +76,7 @@ public class BoardManager : MonoBehaviour
         // Create AI border
         ++x;
         --y;
+        Debug.Log("Pos " + x + y);
         for(int i=0; i<ring; ++i) yield return StartCoroutine(InstantiateHex(x, ++y, true)); // move down right. Note N-1
         for(int i=0; i<ring; ++i) yield return StartCoroutine(InstantiateHex(--x, ++y, true)); // move down left
         for(int i=0; i<ring; ++i) yield return StartCoroutine(InstantiateHex(--x, y, true)); // move left
@@ -64,5 +86,25 @@ public class BoardManager : MonoBehaviour
 
 
         yield return true;
+    }
+
+    public void DestroyTile(Vector2 tile)
+    {
+        HexTile ht = hexMap[tile];
+        if (ht)
+        {
+            ht.DamageTile(ht.hp);
+        }
+    }
+
+    public void DestroyRing(int ring)
+    {
+        int x = ring, y = -ring;
+        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(x, ++y)); // move down right. Note N-1
+        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(--x, ++y)); // move down left
+        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(--x, y)); // move left
+        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(x, --y)); // move up left
+        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(++x, --y)); // move up right
+        for(int i=0; i<ring; ++i) DestroyTile(new Vector2(++x, y));  // move right
     }
 }
