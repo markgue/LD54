@@ -43,7 +43,8 @@ public class  HexTile: MonoBehaviour
         }
         isDestroyed = true;
         GameObject hexCollider = gameObject.transform.GetChild(0).gameObject;
-        hexCollider.AddComponent<Rigidbody>();
+        Rigidbody rb = hexCollider.AddComponent<Rigidbody>();
+        rb.AddTorque(new Vector3(Random.Range(0, 1f), 0, Random.Range(0, 1f)).normalized * 0.3f, ForceMode.Acceleration);
         hexCollider.transform.parent = null;
     }
 
