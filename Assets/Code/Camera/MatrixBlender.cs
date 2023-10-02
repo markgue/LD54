@@ -34,4 +34,17 @@ public class MatrixBlender : MonoBehaviour {
         StopAllCoroutines();
         return StartCoroutine(LerpFromTo(m_camera.projectionMatrix, targetMatrix, duration, ease, reverse));
     }
+
+    public IEnumerator LerpTransform(Transform src, Transform dest, float duration, float ease)
+    {
+        float startTime = Time.time;
+        while (Time.time - startTime < duration) {
+            float step = Mathf.Pow((Time.time - startTime) / duration, ease);
+            m_camera.transform.position = Vector3.Lerp(src.position, dest.position, step);
+            m_camera.transform.rotation = Quaternion.Lerp(src.rotation, dest.rotation, step);
+            yield return 1;
+        }
+        m_camera.transform.position = dest.position;
+        m_camera.transform.rotation = dest.rotation;
+    }
 }
