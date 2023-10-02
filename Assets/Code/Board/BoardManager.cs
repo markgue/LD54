@@ -97,9 +97,7 @@ public class BoardManager : MonoBehaviour
         HexTile ht = hexMap[tile];
         if (ht)
         {
-            ht.transform.Rotate(new Vector3(Random.Range(0, 360),Random.Range(0, 360),Random.Range(0, 360)));
             ht.DamageTile(ht.hp);
-            
         }
     }
 
