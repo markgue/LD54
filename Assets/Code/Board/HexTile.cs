@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class  HexTile: MonoBehaviour
+public class  HexTile : MonoBehaviour
 {
     private const int MAX_HP = 3;
     public int q; // Row
@@ -14,6 +14,7 @@ public class  HexTile: MonoBehaviour
     public bool ignoreDamageIndicator = false;
 
     private Material mat;
+    [SerializeField] HexAltitude alt;
 
 
     public void Start()
@@ -45,6 +46,8 @@ public class  HexTile: MonoBehaviour
             mat.SetFloat("_CrackAmount", dmgVisual);
         if (hp <= 0)
             DestroyTile();
+        else
+            alt.Rumble(1, 3);
     }
 
     private void DestroyTile()
@@ -54,43 +57,18 @@ public class  HexTile: MonoBehaviour
             return;
         }
         isDestroyed = true;
+        alt.Rumble(5, 5);
+        StartCoroutine(DelayedFall(70));   
+    }
+    private IEnumerator DelayedFall(int delayTicks)
+    {
+        for (int i = 0; i < delayTicks; i++)
+            yield return new WaitForFixedUpdate();
         GameObject hexCollider = gameObject.transform.GetChild(0).gameObject;
         Rigidbody rb = hexCollider.AddComponent<Rigidbody>();
         rb.AddTorque(new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * 100f);
         hexCollider.transform.parent = null;
     }
-
-    public void OnCollisionEnter(Collision collision)
-    {
-        FighterMovement ft = collision.collider.GetComponentInParent<FighterMovement>();
-        if (ft != null && ft.IsAirborne())
-        {
-            DamageTile(1);
-            if (isDestroyed)
-            {
-                ft.forceJump = true;
-                ft.SetAirborne(true);
-                ft.Jump();
-            }
-            else
-            {
-                ft.SetAirborne(false);
-            }
-        }
-    }
-
-    public void OnCollisionExit(Collision collision)
-    {
-        FighterMovement ft = collision.collider.GetComponentInParent<FighterMovement>();
-        if (ft != null && ft.IsAirborne())
-        {
-            if (isDestroyed)
-            {
-                //ft.Jump();
-            }
-        }
-    }
-
 
     public void OnDrawGizmos() 
     {

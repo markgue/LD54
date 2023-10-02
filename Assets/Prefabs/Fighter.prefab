@@ -300,6 +300,7 @@ MonoBehaviour:
   dashForce: 1500
   airMobility: 0.3
   dir: {fileID: 2783512136801463586}
+  forceJump: 0
 --- !u!1 &5597310276077027629
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,8 +472,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c0bfc5e4000aa54cbee9c06086bc741, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2348383354990880194}
   m_SourcePrefab: {fileID: 100100000, guid: 1c0bfc5e4000aa54cbee9c06086bc741, type: 3}
+--- !u!1 &8402202972745362775 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c0bfc5e4000aa54cbee9c06086bc741, type: 3}
+  m_PrefabInstance: {fileID: 8672796844763041798}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2348383354990880194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8402202972745362775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d42ce892af75dbf4085b5e84abb7c013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 30
 --- !u!4 &9210230376914991085 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1c0bfc5e4000aa54cbee9c06086bc741, type: 3}

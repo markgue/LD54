@@ -17,17 +17,14 @@ public class FighterMovement : MonoBehaviour
     Vector3 latestMovement;     //latest non-zero direction vector inputted
     Vector3 jumpVector;         //vector applied to make this fighter jump
     float airMod = 1f;
-    bool airborne;
-    public bool forceJump = false;
-
-    List<HexTile> hexTiles = new List<HexTile>();
+    bool jumping;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         jumpVector = new Vector3(0f, jumpForce, 0f);
         latestMovement = new Vector3(0f, 0f, 0f);
-        SetAirborne(true); //because you start in the air rn
+        SetJumping(true); //because you start in the air rn
     }
 
     private void FixedUpdate()
@@ -47,10 +44,9 @@ public class FighterMovement : MonoBehaviour
 
     public void Jump()
     {
-        if (!airborne || forceJump)
+        if (!jumping)
         {
-            forceJump = false;
-            SetAirborne(true);
+            SetJumping(true);
             rb.AddForce(jumpVector);
         }
     }
@@ -61,14 +57,14 @@ public class FighterMovement : MonoBehaviour
         rb.AddForce(latestMovement.normalized * dashForce);
     }
 
-    public bool IsAirborne()
+    public bool IsJumping()
     {
-        return airborne;
+        return jumping;
     }
 
-    public void SetAirborne(bool b)
+    private void SetJumping(bool b)
     {
-        airborne = b;
+        jumping = b;
         if (b)
             airMod = airMobility;
         else
@@ -78,24 +74,10 @@ public class FighterMovement : MonoBehaviour
     public void OnCollisionEnter(Collision collision)
     {
         HexTile ht = collision.collider.GetComponentInParent<HexTile>();
-        if (ht != null)
+        if (ht != null && jumping)
         {
-            hexTiles.Add(ht);
-            if (hexTiles.Count == 1)
-            {
-                SetAirborne(false);
-            }
-        }
-    }
-
-    public void OnCollisionExit(Collision collision)
-    {
-        HexTile ht = collision.collider.GetComponentInParent<HexTile>();
-        if (ht != null)
-        {
-            hexTiles.Remove(ht);
-            if (hexTiles.Count == 0)
-                SetAirborne(true);
+            SetJumping(false);
+            ht.DamageTile(1);
         }
     }
 }
