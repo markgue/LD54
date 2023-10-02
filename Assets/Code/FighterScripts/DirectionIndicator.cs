@@ -10,6 +10,7 @@ public class DirectionIndicator : MonoBehaviour
     [SerializeField] Color baseColor;
     [SerializeField] Color dashReadyColor;
     bool dashReady = true;
+    Coroutine lerp;
 
     private void Awake()
     {
@@ -24,7 +25,21 @@ public class DirectionIndicator : MonoBehaviour
             rotation *= -1;
         Quaternion q = new Quaternion();
         q.eulerAngles = new Vector3(90, 0, rotation);
-        transform.rotation = q;
+        if (lerp != null)
+            StopCoroutine(lerp);
+        lerp = StartCoroutine(LerpRotation(q));
+    }
+
+    private IEnumerator LerpRotation(Quaternion goal)
+    {
+        Quaternion start = transform.rotation, current;
+        for (int i = 0; i < 10; i++)
+        {
+            current = Quaternion.Lerp(start, goal, i / 10f);
+            transform.rotation = current;
+            yield return new WaitForFixedUpdate();
+        }
+        lerp = null;
     }
 
     private void UpdateColors()
