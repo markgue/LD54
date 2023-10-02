@@ -50,6 +50,7 @@ MonoBehaviour:
   arrow: {fileID: 4182011646073196944}
   baseColor: {r: 0.73333335, g: 0.454902, b: 0.4784314, a: 1}
   dashReadyColor: {r: 1, g: 1, b: 1, a: 1}
+  lerpTicks: 5
 --- !u!1 &2349751790344168217
 GameObject:
   m_ObjectHideFlags: 0

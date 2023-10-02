@@ -27,10 +27,6 @@ public class BoardManager : MonoBehaviour
         yield return StartCoroutine(GenerateHexagonalGrid());
         yield return StartCoroutine(TestDestroy(7));
         yield return StartCoroutine(TestDestroy(6));
-        yield return StartCoroutine(TestDestroy(5));
-        yield return StartCoroutine(TestDestroy(4));
-        yield return StartCoroutine(TestDestroy(3));
-        yield return StartCoroutine(TestDestroy(2));
     }
 
     IEnumerator TestDestroy(int ring)

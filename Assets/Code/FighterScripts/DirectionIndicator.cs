@@ -11,6 +11,7 @@ public class DirectionIndicator : MonoBehaviour
     [SerializeField] Color dashReadyColor;
     bool dashReady = true;
     Coroutine lerp;
+    public int lerpTicks = 10;
 
     private void Awake()
     {
@@ -33,9 +34,9 @@ public class DirectionIndicator : MonoBehaviour
     private IEnumerator LerpRotation(Quaternion goal)
     {
         Quaternion start = transform.rotation, current;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < lerpTicks; i++)
         {
-            current = Quaternion.Lerp(start, goal, i / 10f);
+            current = Quaternion.Lerp(start, goal, i / (float)lerpTicks);
             transform.rotation = current;
             yield return new WaitForFixedUpdate();
         }

@@ -18,6 +18,7 @@ public class FighterMovement : MonoBehaviour
     Vector3 jumpVector;         //vector applied to make this fighter jump
     float airMod = 1f;
     bool airborne;
+    public bool forceJump = false;
 
     List<HexTile> hexTiles = new List<HexTile>();
 
@@ -46,8 +47,10 @@ public class FighterMovement : MonoBehaviour
 
     public void Jump()
     {
-        //if (!airborne)
+        if (!airborne || forceJump)
         {
+            forceJump = false;
+            SetAirborne(true);
             rb.AddForce(jumpVector);
         }
     }
@@ -78,15 +81,8 @@ public class FighterMovement : MonoBehaviour
         if (ht != null)
         {
             hexTiles.Add(ht);
-            //Debug.Log("Enter: " + hexTiles.Count);
-
             if (hexTiles.Count == 1)
             {
-                if (airborne)
-                {
-                    //Debug.Log("damaging tile");
-                    ht.DamageTile(1);
-                }
                 SetAirborne(false);
             }
         }
@@ -97,7 +93,6 @@ public class FighterMovement : MonoBehaviour
         HexTile ht = collision.collider.GetComponentInParent<HexTile>();
         if (ht != null)
         {
-            //Debug.Log("Exit: " + hexTiles.Count);
             hexTiles.Remove(ht);
             if (hexTiles.Count == 0)
                 SetAirborne(true);

@@ -15,6 +15,7 @@ public class  HexTile: MonoBehaviour
 
     private Material mat;
 
+
     public void Start()
     {
         hp = MAX_HP;
@@ -65,8 +66,31 @@ public class  HexTile: MonoBehaviour
         if (ft != null && ft.IsAirborne())
         {
             DamageTile(1);
+            if (isDestroyed)
+            {
+                ft.forceJump = true;
+                ft.SetAirborne(true);
+                ft.Jump();
+            }
+            else
+            {
+                ft.SetAirborne(false);
+            }
         }
     }
+
+    public void OnCollisionExit(Collision collision)
+    {
+        FighterMovement ft = collision.collider.GetComponentInParent<FighterMovement>();
+        if (ft != null && ft.IsAirborne())
+        {
+            if (isDestroyed)
+            {
+                //ft.Jump();
+            }
+        }
+    }
+
 
     public void OnDrawGizmos() 
     {
